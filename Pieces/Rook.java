@@ -16,7 +16,7 @@ public class Rook extends Piece {
 
         for (int i = 0; i < ChessBoard.COL_SIZE; i++) {
             for (int j = 0; j < ChessBoard.ROW_SIZE; j++) {
-                if (row == i || col == j) {
+                if (row == i ^ col == j) {
                     legalMoves[i][j] = 1;
                 }
             }

@@ -24,6 +24,8 @@ public class King extends Piece {
                 }
             }
         }
+
+        legalMoves[row][col] = 0;
         return legalMoves;
     }
 }

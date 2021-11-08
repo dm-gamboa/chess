@@ -20,7 +20,13 @@ public class Player {
         moves = new ArrayList<Move>();
     }
 
+    List<Move> getMoves() {
+        return moves;
+    }
+
     void addCaptured(Piece piece) {}
 
-    void addMove(Move move) {}
+    void addMove(Move move) {
+        moves.add(move);
+    }
 }
