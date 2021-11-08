@@ -4,8 +4,9 @@ import A01207448.Enums.Color;
 import A01207448.Enums.PieceNotation;
 
 public class Piece {
-    private final Color color;
-    private final PieceNotation notation;
+    protected final Color color;
+    protected final PieceNotation notation;
+    protected boolean hasMoved;
 
     public Piece(Color color, PieceNotation notation) {
         this.color = color;
@@ -16,13 +17,25 @@ public class Piece {
         return color;
     }
 
+    String getColorNotation() {
+        return color == Color.WHITE ? "W" : "B";
+    }
+
     PieceNotation getNotation() {
         return notation;
     }
 
+    boolean hasMoved() {
+        return hasMoved;
+    }
+
+    void hasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
     void capture() {}
 
-    public int[][] getLegalMoves() {
+    public int[][] getLegalMoves(int row, int col) {
         return null;
     }
 }

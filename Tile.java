@@ -8,12 +8,14 @@ import java.awt.event.*;
 public class Tile  extends JButton {
     public static Color DARK_TILE = new Color(112,80,77); // Medium Taupe
     public static Color LIGHT_TILE = new Color(239, 222, 205); // Almond
+    public static final Color SELECTABLE_TILE = new Color(76, 153, 0); // Green
 
     private final int row;
     private final int col;
     private JLabel label;
     private Piece piece;
     private boolean isSelectable;
+    private Color color;
 
     Tile (int row, int col, ActionListener actionListener) {
         this.row = row;
@@ -23,7 +25,7 @@ public class Tile  extends JButton {
         label = new JLabel();
         this.add(label);
         
-        final Color color = getColor(row, col);
+        color = getColor(row, col);
         this.setBackground(color);  
         this.setOpaque(true); // Needed to make tile colour visible in Mac sOS
         this.setBorderPainted(false); // Needed to make tile colour visible in Mac OS
@@ -31,13 +33,21 @@ public class Tile  extends JButton {
     }
 
     void setPiece(Piece piece) {
-        String text = piece != null ? piece.getNotation().name() : "";
+        String text = "";
+        if (piece != null) {
+            text += piece.getColorNotation() + piece.getNotation().name();
+        }
         label.setText(text);
         this.piece = piece;
     }
 
-    void setIsSelectbale(boolean isSelectable) {
+    void setIsSelectable(boolean isSelectable) {
         this.isSelectable = isSelectable;
+        if (isSelectable) {
+            this.setBackground(SELECTABLE_TILE);
+        } else {
+            this.setBackground(color);
+        }
     }
 
     /**
@@ -66,6 +76,10 @@ public class Tile  extends JButton {
 
     int getCol() {
         return col;
+    }
+
+    boolean isSelectable() {
+        return isSelectable;
     }
 
     Piece getPiece() {

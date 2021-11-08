@@ -22,8 +22,8 @@ public class ChessBoard extends JFrame {
         this.setSize(BOARD_SIZE, BOARD_SIZE);
 
         tiles = new ArrayList<Tile>();
-        for (int i = 1; i <= COL_SIZE; i++) {
-            for (int j = 1; j <= ROW_SIZE; j++) {
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
                 final Tile tile = new Tile(i, j, tileListener);
                 tiles.add(tile);
                 add(tile);
@@ -38,6 +38,16 @@ public class ChessBoard extends JFrame {
     }
 
     void movePiece(Tile origin, Tile destination) {
+        if (origin != destination) {
+            Piece pieceToMove = origin.getPiece();
+            destination.setPiece(pieceToMove);
+            origin.setPiece(null);
+            pieceToMove.hasMoved(true);
+        }
+
+        for (Tile tile : tiles) {
+            tile.setIsSelectable(false);
+        }
     }
 
     void clear() {
@@ -82,6 +92,22 @@ public class ChessBoard extends JFrame {
     public void display() {
     }
 
-    void showSelectableTiles(int[][] pos) {
+    void showSelectableTiles(int row, int col) {
+        int index = (row * ROW_SIZE) + col;
+        Tile tile = tiles.get(index);
+        Piece pieceToMove = tile.getPiece();
+        int pos[][] = tile.getPiece().getLegalMoves(row, col);
+
+        for (int i = 0; i < COL_SIZE; i++) {
+            for (int j = 0; j < ROW_SIZE; j++) {
+                if (pos[i][j] == 1) {
+                    index = (i * ROW_SIZE) + j;
+                    tile = tiles.get(index);
+                    if (!(pieceToMove instanceof Pawn) || tile.getPiece() == null) {
+                        tile.setIsSelectable(true);
+                    }
+                }
+            }
+        }
     }
 }
