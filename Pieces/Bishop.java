@@ -25,4 +25,29 @@ public class Bishop extends Piece {
         }
         return legalMoves;
     }
+
+    @Override
+    public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
+        int[][][] legalMoves = new int[numBoards][ChessBoard.ROW_SIZE][ChessBoard.COL_SIZE];
+
+        for (int i = 0; i < numBoards; i++) {
+            if (i != boardIndex) {
+                int diagonalMove = Math.abs(i - boardIndex);
+                int startRow = (row - diagonalMove) < 0 ? row : row - diagonalMove;
+                int startCol = (col - diagonalMove) < 0 ? col : col - diagonalMove;
+                int endRow = row + diagonalMove;
+                int endCol = col + diagonalMove;
+
+                for (int j = startRow; j <= endRow && j >= 0 && j < ChessBoard.ROW_SIZE; j += diagonalMove) {
+                    for (int k = startCol; k <= endCol && k >= 0 && k < ChessBoard.COL_SIZE; k += diagonalMove) {
+                        if (j != row || k != col) {
+                            legalMoves[i][j][k] = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        return legalMoves;
+    }
 }

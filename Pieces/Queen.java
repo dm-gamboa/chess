@@ -51,8 +51,6 @@ public class Queen extends Piece {
                         legalMoves[i][j][k] = 1;
                     }
                 }
-
-                legalMoves[i][row][col] = 1;
             }
         }
 
