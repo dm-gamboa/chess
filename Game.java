@@ -2,23 +2,29 @@ package A01207448;
 
 import A01207448.Enums.*;
 
+import java.awt.GridLayout;
+import javax.swing.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game extends JFrame {
   Menu menu;
-  ChessBoard board;
+  List<ChessBoard> boards;
   GameStatus status;
   GameResult result;
   List<Player> players;
 
   Game() {
     status = GameStatus.ONGOING;
-    board = new ChessBoard(this);
+    boards = new ArrayList<ChessBoard>();
+    setUpBoards(3);
     start();
+
     players = new ArrayList<Player>();
     players.add(new Player(Color.WHITE));
     players.add(new Player(Color.BLACK));
+    this.setVisible(true);
   }
 
   public void setStatus(GameStatus status) {
@@ -40,8 +46,24 @@ public class Game {
     return nextMoveWhite ? Color.WHITE : Color.BLACK;
   }
 
+  void setUpBoards(int numBoards) {
+    int width = ChessBoard.BOARD_SIZE * numBoards;
+    this.setSize(width, ChessBoard.BOARD_SIZE);
+    this.setLayout(new GridLayout(1, numBoards));
+
+    for (int i = 0; i < numBoards; i++) {
+      boards.add(new ChessBoard(this, i == 0));
+    }
+
+    for (ChessBoard board : boards) {
+      add(board);
+    }
+  }
+
   void start() {
-    board.setVisible(true);
+    for (ChessBoard board : boards) {
+      board.setVisible(true);
+    }
   }
 
   void restart() {}

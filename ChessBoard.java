@@ -6,21 +6,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.awt.GridLayout;
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public class ChessBoard extends JFrame {
+public class ChessBoard extends JPanel {
     public static final int ROW_SIZE = 8;
     public static final int COL_SIZE = 8;
     public static final int BOARD_SIZE = 650;
     
     private static enum Direction { NORTH, SOUTH, EAST, WEST };
 
+    private final boolean isStartingBoard;
     private final List<Tile> tiles;
     private final TileListener tileListener;
     final Game game;
 
-    public ChessBoard(Game game) {
+    public ChessBoard(Game game, boolean isStartingBoard) {
         this.game = game;
+        this.isStartingBoard = isStartingBoard;
 
         tileListener = new TileListener(this);
         this.setLayout(new GridLayout(8, 18));
@@ -35,7 +37,9 @@ public class ChessBoard extends JFrame {
             }
         }
 
-        setup();
+        if (isStartingBoard) {
+            setup();
+        }
     }
 
     List<Tile> getTiles(int[][] pos) {
@@ -159,7 +163,8 @@ public class ChessBoard extends JFrame {
         showLegalMoves(Direction.NORTH, Direction.WEST, row, col - 1, pos, pieceToMove);
         showLegalMoves(Direction.SOUTH, Direction.EAST, row + 1, col, pos, pieceToMove);
         showLegalMoves(Direction.SOUTH, Direction.WEST, row + 1, col - 1, pos, pieceToMove);
-
+        
+        // Need to check once again because of the overlap between diagonals and straight moves
         if (pieceToMove instanceof Queen || pieceToMove instanceof King) {
             showLegalMoves(Direction.NORTH, Direction.EAST, row - 1, col + 1, pos, pieceToMove);
             showLegalMoves(Direction.NORTH, Direction.WEST, row - 1, col - 1, pos, pieceToMove);
