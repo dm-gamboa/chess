@@ -38,4 +38,8 @@ public class Piece {
     public int[][] getLegalMoves(int row, int col) {
         return null;
     }
+
+    public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
+        return null;
+    }
 }

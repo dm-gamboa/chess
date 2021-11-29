@@ -6,12 +6,10 @@ import java.awt.event.*;
 class TileListener implements ActionListener {
     private final ChessBoard board;
     private final Game game;
-    private Tile previouslySelectedTile;
 
     TileListener(ChessBoard board) {
         this.board = board;
         this.game = board.game;
-        previouslySelectedTile = null;
     }
 
     @Override
@@ -20,17 +18,27 @@ class TileListener implements ActionListener {
         Tile selectedTile = (Tile) selected;
         Piece selectedPiece = selectedTile.getPiece();
 
+        Tile previouslySelectedTile = game.getPreviouslySelectedTile();
+        ChessBoard previouslySelectedBoard = game.getPreviouslySelectedBoard();
+
         if (previouslySelectedTile != null) {
             if (selectedTile.isSelectable()) {
                 previouslySelectedTile.setIsSelectable(false);
-                board.movePiece(previouslySelectedTile, selectedTile);
-                previouslySelectedTile = null;
+                game.movePiece(previouslySelectedTile, selectedTile);
+                game.deselectTiles();
             }
         } else if (selectedPiece != null && selectedPiece.getColor() == game.getNextPlayer()) {
-            previouslySelectedTile = selectedTile;
+            game.setPreviouslySelectedTile(selectedTile);
+            game.setPreviouslySelectedBoard(board);
             selectedTile.setIsSelectable(true);
-            if (selectedTile.getPiece() != null) {
-                board.showSelectableTiles(selectedTile.getRow(), selectedTile.getCol());
+
+            if (selectedPiece != null) {
+                int row = selectedTile.getRow();
+                int col = selectedTile.getCol();
+                int boardIndex = board.getIndex();
+
+                board.showSelectableTiles(row, col);
+                game.showSelectableTilesOnOtherBoards(selectedPiece, boardIndex, row, col);
             }
         }
     }

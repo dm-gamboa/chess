@@ -20,4 +20,21 @@ public class Pawn extends Piece {
         }
         return legalMoves;
     }
+
+    @Override
+    public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
+        int[][][] legalMoves = new int[numBoards][ChessBoard.ROW_SIZE][ChessBoard.COL_SIZE];
+        int rightBoards = boardIndex + 1;
+
+        if (boardIndex != 0) {
+            legalMoves[boardIndex--][row][col] = 1;
+        }
+        legalMoves[rightBoards++][row][col] = 1;
+
+        if (!hasMoved) {
+            legalMoves[rightBoards][row][col] = 1;
+        }
+
+        return legalMoves;
+    }
 }

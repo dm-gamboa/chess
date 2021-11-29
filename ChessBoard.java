@@ -1,6 +1,6 @@
 package A01207448;
 
-import A01207448.Enums.Color;
+import A01207448.Enums.*;
 import A01207448.Pieces.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,17 +12,15 @@ public class ChessBoard extends JPanel {
     public static final int ROW_SIZE = 8;
     public static final int COL_SIZE = 8;
     public static final int BOARD_SIZE = 650;
-    
-    private static enum Direction { NORTH, SOUTH, EAST, WEST };
 
-    private final boolean isStartingBoard;
+    private final int index;
+    final Game game;
     private final List<Tile> tiles;
     private final TileListener tileListener;
-    final Game game;
 
-    public ChessBoard(Game game, boolean isStartingBoard) {
+    public ChessBoard(Game game, int index) {
         this.game = game;
-        this.isStartingBoard = isStartingBoard;
+        this.index = index;
 
         tileListener = new TileListener(this);
         this.setLayout(new GridLayout(8, 18));
@@ -37,13 +35,18 @@ public class ChessBoard extends JPanel {
             }
         }
 
-        if (isStartingBoard) {
+        if (index == 0) {
             setup();
         }
     }
 
-    List<Tile> getTiles(int[][] pos) {
-        return null;
+    Tile getTile(int row, int col) {
+        int index = (row * ROW_SIZE) + col;
+        return tiles.get(index);
+    }
+
+    int getIndex() {
+        return index;
     }
 
     void movePiece(Tile origin, Tile destination) {
@@ -60,10 +63,6 @@ public class ChessBoard extends JPanel {
             } else {
                 whitePlayer.addMove(new Move());
             }
-        }
-
-        for (Tile tile : tiles) {
-            tile.setIsSelectable(false);
         }
     }
 
@@ -109,7 +108,13 @@ public class ChessBoard extends JPanel {
     public void display() {
     }
 
-    private void showLegalMoves(Direction verticalDirection, Direction horizontalDirection, int row, int col, int[][] legalMoves,  Piece pieceToMove) {
+    public void deselectTiles() {
+        for (Tile tile : tiles) {
+            tile.setIsSelectable(false);
+        }
+    }
+
+    private void showLegalMoves(Direction verticalDirection, Direction horizontalDirection, int row, int col, int[][] legalMoves, Piece pieceToMove) {
         int currentRow = row;
         int currentCol = col;
         int rowBound = verticalDirection == Direction.NORTH ? -1 : COL_SIZE;
