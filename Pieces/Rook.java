@@ -23,4 +23,17 @@ public class Rook extends Piece {
         }
         return legalMoves;
     }
+
+    @Override
+    public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
+        int[][][] legalMoves = new int[numBoards][ChessBoard.ROW_SIZE][ChessBoard.COL_SIZE];
+
+        for (int i = 0; i < numBoards; i++) {
+            if (i != boardIndex) {
+                legalMoves[i][row][col] = 1;
+            }
+        }
+
+        return legalMoves;
+    }
 }

@@ -126,10 +126,6 @@ public class Game extends JFrame {
     int rowBound = getBounds(verticalDirection, row, maxSpacesToMove);
     int colBound = getBounds(horizontalDirection, col, maxSpacesToMove);
 
-    if (boardIndex == 2 && row == 7 && col == 7) {
-      System.out.println(legalMoves[2][7][7]);
-    }
-
     while (rowBound != currentRow) {
       while (colBound != currentCol) {
         Tile selectedTile = boards.get(boardIndex).getTile(currentRow, currentCol);
