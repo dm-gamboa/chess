@@ -28,4 +28,58 @@ public class Knight extends Piece {
         }
         return legalMoves;
     }
+
+    @Override
+    public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
+        int[][][] legalMoves = new int[numBoards][ChessBoard.ROW_SIZE][ChessBoard.COL_SIZE];
+        int leftBoard = boardIndex - 1;
+        int rightBoard = boardIndex + 1;
+
+        for (int i = 2; i > 0; i--) {
+            if (row + i < ChessBoard.ROW_SIZE) {
+                if (leftBoard >= 0) {
+                    legalMoves[leftBoard][row + i][col] = 1;
+                }
+                
+                if (rightBoard < numBoards) {
+                    legalMoves[rightBoard][row + i][col] = 1;
+                }
+            }
+
+            if (row - i >= 0) {
+                if (leftBoard >= 0) {
+                    legalMoves[leftBoard][row - i][col] = 1;
+                }
+                
+                if (rightBoard < numBoards) {
+                    legalMoves[rightBoard][row - i][col] = 1;
+                }
+            }
+            
+            if (col + i < ChessBoard.COL_SIZE) {
+                if (leftBoard >= 0) {
+                    legalMoves[leftBoard][row][col + i] = 1;
+                }
+                
+                if (rightBoard < numBoards) {
+                    legalMoves[rightBoard][row][col + i] = 1;
+                }
+            }
+            
+            if (col - i >= 0) {
+                if (leftBoard >= 0) {
+                    legalMoves[leftBoard][row][col - i] = 1;
+                }
+                
+                if (rightBoard < numBoards) {
+                    legalMoves[rightBoard][row][col - i] = 1;
+                }
+            }
+
+            leftBoard--;
+            rightBoard++;
+        }
+
+        return legalMoves;
+    }
 }
