@@ -50,19 +50,18 @@ public class ChessBoard extends JPanel {
     }
 
     void movePiece(Tile origin, Tile destination) {
-        if (origin != destination) {
-            Piece pieceToMove = origin.getPiece();
-            destination.setPiece(pieceToMove);
-            origin.setPiece(null);
-            pieceToMove.hasMoved(true);
 
-            Player whitePlayer = game.players.get(0);
-            Player blackPlayer = game.players.get(1);
-            if (whitePlayer.getMoves().size() > blackPlayer.getMoves().size()) {
-                blackPlayer.addMove(new Move());
-            } else {
-                whitePlayer.addMove(new Move());
-            }
+        Piece pieceToMove = origin.getPiece();
+        destination.setPiece(pieceToMove);
+        origin.setPiece(null);
+        pieceToMove.hasMoved(true);
+
+        Player whitePlayer = game.players.get(0);
+        Player blackPlayer = game.players.get(1);
+        if (whitePlayer.getMoves().size() > blackPlayer.getMoves().size()) {
+            blackPlayer.addMove(new Move());
+        } else {
+            whitePlayer.addMove(new Move());
         }
     }
 
@@ -114,7 +113,8 @@ public class ChessBoard extends JPanel {
         }
     }
 
-    private void showLegalMoves(Direction verticalDirection, Direction horizontalDirection, int row, int col, int[][] legalMoves, Piece pieceToMove) {
+    private void showLegalMoves(Direction verticalDirection, Direction horizontalDirection, int row, int col,
+            int[][] legalMoves, Piece pieceToMove) {
         int currentRow = row;
         int currentCol = col;
         int rowBound = verticalDirection == Direction.NORTH ? -1 : COL_SIZE;
@@ -127,7 +127,7 @@ public class ChessBoard extends JPanel {
                     int index = (currentRow * ROW_SIZE) + currentCol;
                     Tile tile = tiles.get(index);
                     Piece pieceInCurrentTile = tile.getPiece();
-    
+
                     if (pieceInCurrentTile != null) {
                         boolean canCaptureOtherPiece = pieceToMove.getColor() != pieceInCurrentTile.getColor();
                         if (!(pieceToMove instanceof Pawn) && canCaptureOtherPiece) {
@@ -168,8 +168,9 @@ public class ChessBoard extends JPanel {
         showLegalMoves(Direction.NORTH, Direction.WEST, row, col - 1, pos, pieceToMove);
         showLegalMoves(Direction.SOUTH, Direction.EAST, row + 1, col, pos, pieceToMove);
         showLegalMoves(Direction.SOUTH, Direction.WEST, row + 1, col - 1, pos, pieceToMove);
-        
-        // Need to check once again because of the overlap between diagonals and straight moves
+
+        // Need to check once again because of the overlap between diagonals and
+        // straight moves
         if (pieceToMove instanceof Queen || pieceToMove instanceof King) {
             showLegalMoves(Direction.NORTH, Direction.EAST, row - 1, col + 1, pos, pieceToMove);
             showLegalMoves(Direction.NORTH, Direction.WEST, row - 1, col - 1, pos, pieceToMove);
@@ -180,7 +181,6 @@ public class ChessBoard extends JPanel {
         if (pieceToMove instanceof Pawn) {
             int leftDiagonalIndex = pieceToMove.getColor() == Color.BLACK ? index + 9 : index - 9;
             int rightDiagonalIndex = pieceToMove.getColor() == Color.BLACK ? index + 7 : index - 7;
-
 
             Tile leftDiagonalTile = tiles.get(leftDiagonalIndex);
             Piece leftDiagonalPiece = leftDiagonalTile.getPiece();

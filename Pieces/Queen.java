@@ -37,45 +37,23 @@ public class Queen extends Piece {
     @Override
     public int[][][] getLegalMovesToOtherBoards(int row, int col, int boardIndex, int numBoards) {
         int[][][] legalMoves = new int[numBoards][ChessBoard.ROW_SIZE][ChessBoard.COL_SIZE];
-        int leftBoards = boardIndex - 1;
-        int rightBoards = boardIndex + 1;
 
-        while (rightBoards < numBoards && rightBoards < numBoards) {
-            int diagonalMove = Math.abs(rightBoards - boardIndex);
-            int startRow = row - diagonalMove;
-            int startCol = col - diagonalMove;
-            int endRow = row + diagonalMove;
-            int endCol = col + diagonalMove;
+        for (int i = 0; i < numBoards; i++) {
+            if (i != boardIndex) {
+                int diagonalMove = Math.abs(i - boardIndex);
+                int startRow = (row - diagonalMove) < 0 ? row : row - diagonalMove;
+                int startCol = (col - diagonalMove) < 0 ? col : col - diagonalMove;
+                int endRow = row + diagonalMove;
+                int endCol = col + diagonalMove;
 
-            for (int i = startRow; i <= endRow && i >= 0 && i < ChessBoard.ROW_SIZE; i += diagonalMove) {
-                for (int j = startCol; j <= endCol && j >= 0 && j < ChessBoard.ROW_SIZE; j += diagonalMove) {
-                    legalMoves[rightBoards][i][j] = 1;
+                for (int j = startRow; j <= endRow && j >= 0 && j < ChessBoard.ROW_SIZE; j += diagonalMove) {
+                    for (int k = startCol; k <= endCol && k >= 0 && k < ChessBoard.COL_SIZE; k += diagonalMove) {
+                        legalMoves[i][j][k] = 1;
+                    }
                 }
+
+                legalMoves[i][row][col] = 1;
             }
-            
-            legalMoves[rightBoards][row][col] = 1;
-
-            
-            rightBoards++;
-        }
-
-        while (leftBoards < numBoards && leftBoards >= 0) {
-            int diagonalMove = Math.abs(leftBoards - boardIndex);
-            int startRow = row - diagonalMove;
-            int startCol = col - diagonalMove;
-            int endRow = row + diagonalMove;
-            int endCol = col + diagonalMove;
-
-            for (int i = startRow; i <= endRow && i >= 0 && i < ChessBoard.ROW_SIZE; i -= diagonalMove) {
-                for (int j = startCol; j <= endCol && j >= 0 && j < ChessBoard.ROW_SIZE; j -= diagonalMove) {
-                    legalMoves[leftBoards][i][j] = 1;
-                }
-            }
-            
-            legalMoves[leftBoards][row][col] = 1;
-
-            
-            leftBoards--;
         }
 
         return legalMoves;

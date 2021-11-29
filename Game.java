@@ -16,7 +16,6 @@ public class Game extends JFrame {
   GameResult result;
   List<Player> players;
   private Tile previouslySelectedTile;
-  private ChessBoard previouslySelectedBoard;
 
   Game() {
     status = GameStatus.ONGOING;
@@ -57,21 +56,11 @@ public class Game extends JFrame {
     return previouslySelectedTile;
   }
 
-  public ChessBoard getPreviouslySelectedBoard() {
-    return previouslySelectedBoard;
-  }
-
   void setPreviouslySelectedTile(Tile tile) {
     previouslySelectedTile = tile;
   }
 
-  void setPreviouslySelectedBoard(ChessBoard board) {
-    previouslySelectedBoard = board;
-  }
-
   void deselectTiles() {
-    previouslySelectedTile = null;
-    previouslySelectedBoard = null;
     for (ChessBoard board : boards) {
       board.deselectTiles();
     }
